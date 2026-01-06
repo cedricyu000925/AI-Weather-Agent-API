@@ -99,3 +99,39 @@ This project demonstrates the integration of multiple cloud services and AI tech
 - **Requests**: HTTP library for testing
 
 ---
+
+## 🔌 API Endpoints
+
+### `GET /Health check endpoint`
+
+**Response:**
+{
+  "status": "online",
+  "service": "Weather Agent API",
+  "version": "1.0.0",
+  "endpoints": {
+    "analyze": "/analyze",
+    "docs": "/docs",
+    "health": "/health"
+  }
+}
+
+### `GET /health`
+
+<img width="1153" height="122" alt="Screenshot 2026-01-06 151653" src="https://github.com/user-attachments/assets/31d220c9-c6c8-4715-bdb3-4efbacfb46ca" />
+
+### `POST /analyze`
+{
+  "days": 30,
+  "custom_question": "Has there been unusual weather recently?"
+}
+
+* `days` (int, 7–90): Number of recent days to analyze.
+
+* `custom_question` (optional string): If provided, the LLM answers this specific question using the statistics and data.
+
+<img width="1155" height="288" alt="Screenshot 2026-01-06 152802" src="https://github.com/user-attachments/assets/986ee13f-9347-46f8-954e-5dae9045ca37" />
+
+### `GET /station-info`
+
+<img width="1152" height="93" alt="Screenshot 2026-01-06 152933" src="https://github.com/user-attachments/assets/aa66122f-3e13-4ebd-b6b3-8b667ccacd65" />
