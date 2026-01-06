@@ -161,3 +161,83 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+## 🔐 Environment Configuration
+Create a `.env` file based on the provided template.
+
+**1. Create .env from template**
+
+```bash
+# Mac/Linux
+cp .env.example .env
+
+# Windows (PowerShell)
+copy .env.example .env
+```
+
+**2. Edit .env with your values**
+
+```text
+GCP_PROJECT_ID=ai-weather-analytics
+WEATHER_STATION_ID=999999
+HF_TOKEN=hf_your_actual_huggingface_token_here
+```
+
+* `GCP_PROJECT_ID`: Your Google Cloud project ID.
+
+* `WEATHER_STATION_ID`: NOAA station ID you decided to use.
+
+* `HF_TOKEN`: Your Hugging Face API token (create under Settings → Access Tokens on Hugging Face).
+
+## 🧾 Google Cloud Authentication
+
+The API uses Application Default Credentials to access BigQuery.
+
+```bash
+gcloud auth application-default login
+```
+
+Follow the browser flow to authenticate.
+
+## 🧪 Running Locally
+
+From the project root:
+
+```bash
+# Ensure venv is active
+venv\Scripts\activate           # Windows
+# or
+source venv/bin/activate        # Mac/Linux
+
+# Run the API (from root, targeting src)
+python src/app.py
+```
+
+You should see logs indicating startup and the port in use, for example:
+```text
+Starting FastAPI server on port 8000...
+```
+
+Open in your browser:
+
+* API root: http://localhost:8000
+
+* Swagger UI: http://localhost:8000/docs
+
+* Health: http://localhost:8000/health
+
+**Local test script**
+
+In another terminal:
+```bash
+cd weather-agent-api
+venv\Scripts\activate
+python tests/test_api.py
+```
+This script will:
+
+* Hit the root and health endpoints.
+
+* Call `/analyze` and print statistics and the LLM narrative.
+
+* Test a custom question example.
+
