@@ -135,3 +135,29 @@ This project demonstrates the integration of multiple cloud services and AI tech
 ### `GET /station-info`
 
 <img width="1152" height="93" alt="Screenshot 2026-01-06 152933" src="https://github.com/user-attachments/assets/aa66122f-3e13-4ebd-b6b3-8b667ccacd65" />
+
+---
+
+## 📦 Installation
+**1. Clone the repository**
+```bash
+git clone https://github.com/your-username/weather-agent-api.git
+cd weather-agent-api
+```
+
+**2. Create and activate virtual environment**
+```bash
+python -m venv venv
+
+# Windows
+venv\Scripts\activate
+
+# Mac/Linux
+source venv/bin/activate
+```
+
+**3. Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
