@@ -241,3 +241,139 @@ This script will:
 
 * Test a custom question example.
 
+## ☁️ Deployment to Cloud Run
+
+**1. Enable required Google Cloud services**
+```bash
+gcloud config set project ai-weather-analytics
+
+gcloud services enable cloudbuild.googleapis.com
+gcloud services enable run.googleapis.com
+gcloud services enable artifactregistry.googleapis.com
+```
+
+**2. Deploy to Cloud Run (build from source)**
+
+From the project root:
+```bash
+gcloud run deploy weather-agent-api \
+  --source . \
+  --region asia-east1 \
+  --platform managed \
+  --allow-unauthenticated \
+  --set-env-vars GCP_PROJECT_ID=ai-weather-analytics,WEATHER_STATION_ID=999999,HF_TOKEN=hf_your_actual_huggingface_token_here
+```
+
+* `asia-east1` is a good region for Hong Kong; adjust if needed.
+
+* `--allow-unauthenticated` makes the API publicly accessible (good for demos; you can restrict later).
+
+After deployment, the command prints a URL like:
+```text
+Service URL: https://weather-agent-api-xxxxx-uc.a.run.app
+```
+This is your public base URL.
+
+**3. Cloud test script**
+
+Update `tests/test_cloud_api.py` with your actual URL:
+
+```python
+API_URL = "https://weather-agent-api-xxxxx-uc.a.run.app"
+```
+
+Then run:
+
+```bash
+venv\Scripts\activate
+python tests/test_cloud_api.py
+```
+
+This will call `/health` and `/analyze` on the Cloud Run instance.
+
+---
+## 💡 Usage Examples
+
+**Python client**
+
+```python
+import requests
+
+API_URL = "https://your-cloud-run-url.a.run.app"
+
+# Basic 30-day analysis
+resp = requests.post(
+    f"{API_URL}/analyze",
+    json={"days": 30},
+    timeout=60
+)
+data = resp.json()
+print("Current temp:", data["statistics"]["current_temp"])
+print("Analysis:", data["llm_analysis"])
+
+# Custom question over last 14 days
+resp = requests.post(
+    f"{API_URL}/analyze",
+    json={
+        "days": 14,
+        "custom_question": "Has there been a noticeable warming trend?"
+    },
+    timeout=60
+)
+print("Custom analysis:", resp.json()["llm_analysis"])
+```
+
+**cURL**
+
+```bash
+# Health
+curl https://your-cloud-run-url.a.run.app/health
+
+# 30-day analysis
+curl -X POST https://your-cloud-run-url.a.run.app/analyze \
+  -H "Content-Type: application/json" \
+  -d '{"days": 30}'
+
+# Custom question
+curl -X POST https://your-cloud-run-url.a.run.app/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+        "days": 14,
+        "custom_question": "Is there a cold spell happening?"
+      }'
+```
+
+---
+## 🔮 Future Enhancements
+
+Possible next steps:
+
+* Multi-station support and station selection via query parameters.
+
+* Longer historical trend analysis (seasonal and yearly patterns).
+
+* Basic forecasting using additional models or APIs.
+
+* Alerting system for strong anomalies (email, webhooks).
+
+* Authentication / API keys for controlled public access.
+
+* Caching layer (for example, Redis) for repeated queries.
+
+* Dashboard UI (Streamlit or frontend framework) on top of the API.
+
+---
+## 📝 License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+---
+## 👤 Author
+
+Shiu-kong Yu, Cedric
+
+* **LinkedIn:** www.linkedin.com/in/shiu-kong-yu-971556105
+
+* **Location:** Hong Kong
+
+
