@@ -24,7 +24,7 @@ st.set_page_config(
 
 # API Configuration
 # Change this to your Cloud Run URL, or use localhost for testing
-USE_CLOUD = True  # Set to True when using Cloud Run
+USE_CLOUD = False  # Set to True when using Cloud Run
 
 if USE_CLOUD:
     API_URL = "https://weather-agent-api-620429941346.asia-east1.run.app"  # Replace with your actual URL
@@ -351,3 +351,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
